@@ -1,0 +1,13 @@
+# Ignore everything
+*
+# Except the following ...
+!/readme.md
+!*/
+!*tevo_flash*
+# But descend into directories
+#!*/
+# Recursively allow files under subtree
+#!/certifi/*init*
+# You can be specific with these rules
+# !/some/other/deep/path/**
+!.gitignore

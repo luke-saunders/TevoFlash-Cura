@@ -1,0 +1,94 @@
+{
+    "version": 2,
+    "name": "Tevo Flash",
+    "inherits": "fdmprinter",
+
+    "metadata": 
+    {
+        "author": "Luke Saunders",
+        "manufacturer": "Tevo",
+    	"visible": true,
+    	"file_formats": "text/x-gcode",
+        "has_materials": true,
+        "has_machine_quality": true,
+        "has_variants": true,
+        "variants_name": "Nozzle",
+        "preferred_variant_name": "0.4mm",
+    	"platform": "tevo_flash.stl",
+        "platform_offset": [-22,-10,-150],
+        "machine_extruder_trains":  { "0": "tevo_flash_extruder_0" }
+    },
+    "overrides": 
+    {
+        "machine_name":	{ "default_value": "Tevo Flash" },
+        "machine_width": { "default_value": 235 },
+        "machine_depth": { "default_value": 235 },
+        "machine_height": { "default_value": 250 },
+        "gantry_height": { "value": 35 },
+		"machine_center_is_zero": { "default_value": false },
+		"machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_head_polygon":	
+        {	
+            "default_value": 
+            [
+                [-75, -18],
+                [-75, 35],
+                [18, 35],
+                [18, -18]
+            ] 
+		},
+
+        "material_print_temperature_layer_0": { "value": "min(material_print_temperature + 15, 300)" },
+        "material_bed_temperature_layer_0": { "value": "min(material_bed_temperature + 5, 110)" },
+        "speed_layer_0": { "value": "30" },
+        "skirt_brim_speed": { "value": "speed_layer_0" },
+
+        "retraction_enable": { "default_value": true },
+        "retraction_amount": { "default_value": 3 },
+        "retraction_speed": { "default_value": 40 },
+        "retraction_hop_enabled": { "value": "support_enable" },
+        "retraction_hop": { "value": 0.2 },
+        "retraction_combing": { "value": "'off' if retraction_hop_enabled else 'infill'"},
+        "retraction_combing_max_distance": { "value": 30 },  
+        "travel_avoid_other_parts": { "value": true },
+        "travel_avoid_supports": { "value": true },
+        "travel_retract_before_outer_wall": { "value": true },
+
+        "adhesion_type": { "default_value": "skirt" },
+		"skirt_line_count": { "default_value": 3 },
+        "skirt_gap": { "default_value": 10 },
+        
+		"machine_heated_bed": { "default_value": true },
+	
+		"machine_max_feedrate_x": { "value": 400 },				
+        "machine_max_feedrate_y": { "value": 400 },				
+        "machine_max_feedrate_z": { "value": 50 },				
+        "machine_max_feedrate_e": { "value": 45 },				
+	
+        "acceleration_enabled": { "default_value": true },
+		"machine_acceleration": { "value": 1000 },				
+        "acceleration_print": { "value": "machine_acceleration" },
+        "acceleration_travel": { "value": "machine_acceleration" },				
+        "machine_max_acceleration_x": { "value": 3000 },		
+        "machine_max_acceleration_y": { "value": 3000 },		
+        "machine_max_acceleration_z": { "value": 300 },		
+        "machine_max_acceleration_e": { "value": 10000 },		
+
+        "jerk_enabled": { "value": true },
+        "jerk_print": { "value": 7 },						
+        "jerk_travel": { "value": "jerk_print" },
+        "machine_max_jerk_xy": { "value": 10 },					
+        "machine_max_jerk_z": { "value": 0.3 },					
+		"machine_max_jerk_e": { "value": 5 },						
+		
+        "machine_start_gcode": 
+        {
+            "default_value": "; ==========================\n; Machine-start gcode\n;\nM76 ; Pause print job timer until the print job starts\n;\nM107   ; Turn layer fan off\nG21    ; Set to metric \nG90    ; Force coordinates to be absolute (relative to the origin)\n;\nM104 R{material_print_temperature_layer_0}      ; Initiate hotend preheat\nM140 R{material_bed_temperature_layer_0 + 10}   ; Initiate bed preheat \n;\n; Auto Home\nM117 Auto Homing ...\nG28\n;\nM109 R{material_print_temperature_layer_0}  ; Preheat hotend temp\nM190 R{material_bed_temperature_layer_0}    ; Preheat bed temperature\n;\nM117 Cleaning ...\nG92 E0                  ; Set extruder position\nG1 E1 F500              ; Prime extruder\nG0 X-10 Y10 Z0.3 F9000  ; Prepare for extruder wipe\nG0 X10 Y10 Z0.3 F9000   ; Wipe against bed edge\nG1 E-1 F1800            ; Retract to avoid oozing\nG92 E0                  ; Reset extruder to [0] zero end of cleaning run\n;\nM75 ; Start print job timer\n;\nM117 Est. time: {print_time}\n;\n; ==========================\n;"
+        },
+
+        "machine_end_gcode": 
+        {
+            "default_value": ";\n; ==========================\n; Machine-end gcode\n;\nM107                            ; Turn off layer fan\n;\nG92 E0                          ; Set extruder position \nG1 E-{retraction_amount} F1800  ; Retract filament\nG0 X0 Y{machine_depth} F6000    ; Position bed for part removal\n;\nM104 S0                         ; Turn off hotend\nM140 S0                         ; Turn off bed \n;\nM84                             ; Disable motors\n;\n; ==========================\n;"
+        }
+    }
+}
