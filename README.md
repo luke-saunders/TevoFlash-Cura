@@ -1,13 +1,16 @@
 # Tevo Flash - Printer Definition
 ---
-## Layout Rationale:
+
+## Layout Rationale
 | Function | Location |
 |:---|:---|
-| Acceleration | resources\definitions\tevo_flash.def.json |
-| Speed/Feedrate | resources\quality\tevo_flash_`<quality>`.inst.cfg |
+| Acceleration/Jerk | resources\definitions\tevo_flash.def.json |
+| Speed | resources\quality\tevo_flash_`<quality>`.inst.cfg |
 | Nozzles | resources\variants\tevo_flash_`<variant>`.cfg |
 | Extruder | resources\extruders\tevo_flash_extruder_0.cfg |
 
+## References
+https://github.com/Ultimaker/Cura/wiki/Adding-new-machine-profiles-to-Cura
 
 ---
 ## Tevo Flash v1.0 Firmware (defaults) 
