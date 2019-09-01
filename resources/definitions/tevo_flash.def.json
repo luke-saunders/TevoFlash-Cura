@@ -56,7 +56,7 @@
         "layer_height_0": { "value": 0.3 },
         "cool_fan_full_at_height": { "value": "layer_height_0" },
         "material_flow_layer_0": { "value": "material_flow + 5" },
-        "material_bed_temperature_layer_0": { "value": "min(material_bed_temperature + 25, 120)" },
+        "material_bed_temperature_layer_0": { "value": "min(material_bed_temperature + 15, 100)" },
         "material_print_temperature_layer_0": { "value": "min(material_print_temperature + 15, 300)" },
         "material_final_print_temperature": { "value": "material_print_temperature" },
         "material_initial_print_temperature": { "value": "material_print_temperature" },
