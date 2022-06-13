@@ -1,32 +1,50 @@
+param(
+    [String] $CuraPath = (Resolve-Path -Path "C:\Program Files\Ultimaker Cura*" | Sort-Object Path -Descending)[0]
+)
+
 write-host " 
 
- ___                            _     ____       _       _            
-|_ _|_ __ ___  _ __   ___  _ __| |_  |  _ \ _ __(_)_ __ | |_ ___ _ __ 
- | || '_ `` _ \| '_ \ / _ \| '__| __| | |_) | '__| | '_ \| __/ _ \ '__|
- | || | | | | | |_) | (_) | |  | |_  |  __/| |  | | | | | ||  __/ |   
-|___|_| |_| |_| .__/ \___/|_|   \__| |_|   |_|  |_|_| |_|\__\___|_|   
-              |_|                                                     
+  _____                 _____ _           _     
+ |_   _|____   _____   |  ___| | __ _ ___| |__  
+   | |/ _ \ \ / / _ \  | |_  | |/ _`` / __| '_ \ 
+   | |  __/\ V / (_) | |  _| | | (_| \__ \ | | |
+   |_|\___| \_/ \___/  |_|   |_|\__,_|___/_| |_|
+
 "
-# Find Cura in the default location
-$FindCuraPath = Resolve-Path -Path "C:\Program Files\Ultimaker Cura *"
 
-while(-not( Test-Path -Path ( "$FindCuraPath\Cura.exe" ))) {
-
-    Write-Host -f yellow "Couldn't find Cura in path ($FindCuraPath)`n"
-    $FindCuraPath = Read-Host -Prompt "Enter full-path to Cura"
-
+while (-not( Test-Path -Path ( "$CuraPath\*Cura.exe" )))
+{
+    Write-Host -f yellow "Cura exe not found: $CuraPath `n"
+    $CuraPath = Read-Host -Prompt "Cura Installation Path"
 }
 
-Write-Host "Found Cura path: $FindCuraPath `n"
+Write-Host "Found Cura path: $CuraPath `n"
 
-try {
+try
+{
+    if ($CuraPath -match "(?<=Ultimaker Cura )(.*?)(?=\.)")
+    {
+        $CuraVersion = $Matches.0
+        
+        # TODO: Remove any existing Tevo_Flash files...
 
-    Copy-Item -Path ".\tevo_flash_definition\*" -Destination $FindCuraPath -Force -Recurse -ErrorAction stop
-    Write-Host -f green "Complete. `n"
-    Write-Host -f green "NOTE: If you already have a Tevo Flash printer installed, remove and add printer to reload the definition. `n`n"
+        switch ($CuraVersion)
+        {
+            4 { Copy-Item -Path ".\tevo_flash_definition\*" -Destination $CuraPath -Force -Recurse -ErrorAction stop }
+            5 { Copy-Item -Path ".\tevo_flash_definition\*" -Destination $CuraPath\share\cura -Force -Recurse -ErrorAction stop }
+            default
+            { 
+                write-host "Unknown or Incompatible Cura version"
+                exit 
+            }
+        }
 
-} catch {
+        Write-Host -f green "DONE`n"
+        Write-Host -f green "NOTE: If you're reinstalling the driver, remember to remove and add printer in Cura the reload the definition. `n`n"
 
-    Write-Host -f reg "ERROR: Failed to copy files.  You may need to run this script with elevated permissions (Run as Administrator). `n`n"
-
+    }
+}
+catch
+{
+    Write-Host -f red "ERROR: Failed to copy files.  You may need to run this script with elevated permissions (Run as Administrator). `n`n"
 }
