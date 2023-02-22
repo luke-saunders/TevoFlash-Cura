@@ -72,7 +72,7 @@
             ]
         },
         "machine_start_gcode": {
-            "default_value": "; --- MACHINE START GCODE --- \n\nM76 ; Pause print job timer until the print job starts \n\nM107 ; Turn layer fan off \nG21 ; Set to metric \nG90 ; Absolute coordinates \n\nM104 S{material_print_temperature_layer_0} ; Initiate extruder preheat \nM140 S{material_bed_temperature_layer_0} ; Initiate bed preheat \n\nM117 Auto Home ... \nG28 ; Auto Home \n\nM117 Preheating extruder ... \nM109 R{material_print_temperature_layer_0} ; Preheat extruder temp \nM117 Preheating build plate ... \nM190 R{material_bed_temperature_layer_0} ; Preheat bed temperature \n\nM117 Thermal equilibrium ... \nG4 S30 ; Wait for thermal equilibrium \n\nM117 Cleaning ... \nG0 X-10 Y10 Z0.2 F2000 ; Prepare extruder for prime & wipe \nG92 E0 \nG1 E10 F200 ; Prime extruder \nG92 E0 \nG1 X10 Y10 F2000 ; Wipe nozzle against bed edge \nG92 E0 \n\nM117 Printing ... \n\nM75 ; Start print job timer"
+            "default_value": "; --- MACHINE START GCODE --- \n\nM76 ; Pause print job timer until the print job starts \n\nM107 ; Turn layer fan off \nG21 ; Set to metric \n; G20 ; Set to imperial \nG90 ; Absolute coordinates \n\nM104 S{material_print_temperature_layer_0} ; Initiate extruder preheat \nM140 S{material_bed_temperature_layer_0} ; Initiate bed preheat \n\nM117 Homing ... \nG28 ; Auto Home \n\nM117 Heating ... \nM109 R{material_print_temperature_layer_0} ; Wait for extruder temp \nM190 R{material_bed_temperature_layer_0} ; Wait for bed temp \n\nM117 Cleaning ... \nG0 X-10 Y10 Z0.2 F2000 ; Prepare extruder for prime & wipe \nG92 E0 \nG1 E10 F200 ; Prime extruder \nG92 E0 \nG0 X10 F2000 ; Wipe nozzle against bed edge \nG0 Z0.3 F2000 ; Move to Z 0.3mm \nG1 X200 E10 F2000 ; Extrude line \nG92 E0 \n\nM117 Printing ... \nM75 ; Start print job timer"
         },
         "machine_end_gcode": {
             "default_value": "; --- MACHINE END GCODE ---\n\nM107 ; Turn off layer fan\nM140 S0 ; Turn off bed\n\nG92 E1 ; Set extruder position\nG1 E-1 F1800 ; Retract filament\nM104 S0 ; Turn off extruder\n\nG0 X0 Y{machine_depth} F6000 ; Position bed for part removal\nM84 ; Disable motors"
@@ -81,7 +81,7 @@
             "value": "material_bed_temperature + 10"
         },
         "material_print_temperature_layer_0": {
-            "value": "material_print_temperature + 15"
+            "value": "material_print_temperature + 10"
         },
         "speed_layer_0": {
             "value": 25
@@ -90,10 +90,10 @@
             "value": 0.3
         },
         "material_flow_layer_0": {
-            "value": "material_flow + 1"
+            "value": "material_flow"
         },
         "speed_slowdown_layers": {
-            "value": 5
+            "value": 3
         },
         "adhesion_type": {
             "default_value": "brim"
@@ -123,7 +123,7 @@
             "value": true
         },
         "retraction_hop": {
-            "value": 1
+            "value": 0.5
         },
         "infill_before_walls": {
             "value": "False"
@@ -135,7 +135,7 @@
             "value": 1.0
         },
         "small_hole_max_size": {
-            "value": 2
+            "value": 3
         },
         "small_feature_speed_factor": {
             "value": 50
