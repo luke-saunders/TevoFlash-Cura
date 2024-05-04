@@ -6,12 +6,12 @@
 
 ---
 ## Install Driver
-**Note**: The installer requires elevated permissions for writing files to the Cura folder.  Please use 'run as administrator'.
 
-#### Option 1 - EXE
-    Import-PrinterDefinition.exe
-#### Option 2 - PowerShell
-    PS> .\Import-PrinterDefinition.ps1
+#### Linux
+    ./import-printerdefinition <cura_path>
+
+#### Windows
+    .\Import-PrinterDefinition.ps1
 
 ---
 ## Cura Setup
@@ -22,16 +22,9 @@
     4. Click 'Add'
 
 <img src="Add_Printer.jpg" alt="Add Printer" width=60% height=60%>
----
-## Notes
 
-### Cura Folder Structure
-| Function          | Location                                          |
-| :---------------- | :------------------------------------------------ |
-| Acceleration/Jerk | resources\definitions\tevo_flash.def.json         |
-| Speed             | resources\quality\tevo_flash_`<quality>`.inst.cfg |
-| Nozzles           | resources\variants\tevo_flash_`<variant>`.cfg     |
-| Extruder          | resources\extruders\tevo_flash_extruder_0.cfg     |
+
+## Notes
 
 ### Tevo Flash v1.0 Firmware Defaults 
 #### Acceleration

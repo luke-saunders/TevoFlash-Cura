@@ -60,13 +60,13 @@ try
     # Version Specific Actions
     switch ($CuraVersion)
     {
-        4 { Copy-Item -Path ".\tevo_flash_definition\*" -Destination $CuraPath -Force -Recurse -ErrorAction Stop }
-        5 { Copy-Item -Path ".\tevo_flash_definition\*" -Destination $CuraPath\share\cura -Force -Recurse -ErrorAction Stop }
+        4 { Copy-Item -Path ".\tevo_flash\*" -Destination $CuraPath -Force -Recurse -ErrorAction Stop }
+        5 { Copy-Item -Path ".\tevo_flash\*" -Destination $CuraPath\share\cura -Force -Recurse -ErrorAction Stop }
         default
         {
             Write-Host "WARNING: Untested Cura version" -ForegroundColor Yellow
             if ((Read-Host -Prompt "Would you like to proceed? [y/n]").ToLower() -ne 'y') { exit(1) }
-            Copy-Item -Path ".\tevo_flash_definition\*" -Destination $CuraPath\share\cura -Force -Recurse -ErrorAction Stop
+            Copy-Item -Path ".\tevo_flash\*" -Destination $CuraPath\share\cura -Force -Recurse -ErrorAction Stop
         }
     }
 
