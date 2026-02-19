@@ -72,10 +72,10 @@
             ]
         },
         "machine_start_gcode": {
-            "default_value": "; --- MACHINE START GCODE --- \n\nM76 ; Pause print job timer until the print job starts \n\nM107 ; Turn layer fan off \nG21 ; Set to metric \n; G20 ; Set to imperial \nG90 ; Absolute coordinates \n\nM104 S{material_print_temperature_layer_0} ; Initiate extruder preheat \nM140 S{material_bed_temperature_layer_0} ; Initiate bed preheat \n\nM117 Homing ... \nG28 ; Auto Home \n\nM117 Bed Levelling \nG29 ; Auto bed level \n\nM117 Heating ... \nM109 R{material_print_temperature_layer_0} ; Wait for extruder temp \nM190 R{material_bed_temperature_layer_0} ; Wait for bed temp \n\nM117 Cleaning ... \nG0 X-10 Y10 Z0.2 F2000 ; Prepare extruder for prime & wipe \nG92 E0 \nG1 E10 F200 ; Prime extruder \nG92 E0 \nG0 X10 F2000 ; Wipe nozzle against bed edge \nG0 Z0.3 F2000 ; Move to Z 0.3mm \nG1 X200 E10 F2000 ; Extrude line \nG92 E0 \n\nM117 Printing ... \nM75 ; Start print job timer"
+            "default_value": "; --- MACHINE START GCODE --- \n\nM76 ; Pause print job timer until the print job starts \n\nM107 ; Turn layer fan off \nG21 ; Set to metric \n; G20 ; Set to imperial \nG90 ; Absolute coordinates \nM82 ; Absolute extrusion mode \n\nM104 S{material_print_temperature_layer_0} ; Initiate extruder preheat \nM140 S{material_bed_temperature_layer_0} ; Initiate bed preheat \n\nM117 Homing ... \nG28 ; Auto Home \n\nM117 Heating ... \nM109 R{material_print_temperature_layer_0} ; Wait for extruder temp \nM190 R{material_bed_temperature_layer_0} ; Wait for bed temp \n\nM117 Bed Levelling ... \nG29 ; Auto bed level \n\nM117 Cleaning ... \nG0 X-10 Y10 Z0.2 F2000 ; Prepare extruder for prime & wipe \nG92 E0 \nG1 E10 F200 ; Prime extruder \nG92 E0 \nG0 X10 F2000 ; Wipe nozzle against bed edge \nG0 Z0.3 F2000 ; Move to Z 0.3mm \nG1 X200 E10 F2000 ; Extrude line \nG92 E0 \n\nM117 Printing ... \nM75 ; Start print job timer"
         },
         "machine_end_gcode": {
-            "default_value": "; --- MACHINE END GCODE ---\n\nM107 ; Turn off layer fan\nM140 S0 ; Turn off bed\n\nG92 E1 ; Set extruder position\nG1 E-1 F1800 ; Retract filament\nM104 S0 ; Turn off extruder\n\nG0 X0 Y{machine_depth} F6000 ; Position bed for part removal\nM84 ; Disable motors"
+            "default_value": "; --- MACHINE END GCODE ---\n\nM107 ; Turn off layer fan\nM140 S0 ; Turn off bed\n\nG92 E0 ; Set extruder position\nG1 E-2 F1800 ; Retract filament\nM104 S0 ; Turn off extruder\n\nG0 X0 Y{machine_depth} F6000 ; Position bed for part removal\nM84 ; Disable motors"
         },
         "material_bed_temperature_layer_0": {
             "value": "material_bed_temperature + 10"
@@ -90,7 +90,7 @@
             "value": 0.3
         },
         "material_flow_layer_0": {
-            "value": "material_flow"
+            "value": "material_flow * 1.05"
         },
         "speed_slowdown_layers": {
             "value": 3
@@ -98,23 +98,44 @@
         "adhesion_type": {
             "default_value": "brim"
         },
-        "skirt_brim_line_width": {
-            "value": "machine_nozzle_size * 1.5"
+        "skirt_gap": {
+            "value": 1
+        },
+        "skirt_line_count": {
+            "value": 4
         },
         "brim_gap": {
             "value": 0.2
+        },
+        "brim_width": {
+            "value": 5.0
         },
         "bridge_settings_enabled": {
             "value": true
         },
         "cool_min_layer_time": {
-            "value": 5
+            "value": 10
         },
         "cool_fan_full_at_height": {
-            "value": "layer_height_0 + (2 * layer_height)"
+            "value": 5
         },
         "speed_z_hop": {
             "value": 20
+        },
+        "retract_at_layer_change": {
+            "value": true
+        },
+        "retraction_min_travel": {
+            "value": "2"
+        },
+        "retraction_combing": {
+            "value": "not skin"
+        },
+        "retraction_combing_max_distance": {
+            "value": 0.0
+        },
+        "retraction_count_max": {
+            "value": 10
         },
         "retraction_hop_enabled": {
             "value": true
@@ -123,16 +144,79 @@
             "value": true
         },
         "retraction_hop": {
-            "value": 0.5
+            "value": 1
         },
         "infill_before_walls": {
-            "value": "False"
+            "value": false
+        },
+        "ironing_flow": {
+            "value": 0.5
+        },
+        "ironing_line_spacing": {
+            "value": 0.2
+        },
+        "ironing_pattern": {
+            "value": "concentric"
+        },
+        "ironing_enabled": {
+            "value": false
+        },
+        "magic_fuzzy_skin_enabled": {
+            "value": false
+        },
+        "magic_fuzzy_skin_outside_only": {
+            "value": true
+        },
+        "magic_fuzzy_skin_thickness": {
+            "value": 0.15
+        },
+        "magic_fuzzy_skin_point_density": {
+            "value": 3.0
+        },
+        "meshfix_maximum_deviation": {
+            "value": 0.1
         },
         "meshfix_maximum_resolution": {
             "value": 0.25
         },
         "meshfix_maximum_travel_resolution": {
             "value": 1.0
+        },
+        "support_enable": {
+            "value": false
+        },
+        "support_structure": {
+            "value": "normal"
+        },
+        "support_type": {
+            "value": "everywhere"
+        },
+        "support_interface_enable": {
+            "value": true
+        },
+        "support_interface_density": {
+            "value": 33
+        },
+        "support_interface_pattern": {
+            "value": "concentric"
+        },
+        "support_z_distance": {
+            "value": "layer_height * 1"
+        },
+        "support_xy_distance": {
+            "value": "machine_nozzle_size * 2"
+        },
+        "support_infill_rate": {
+            "value": 10
+        },
+        "support_pattern": {
+            "value": "zigzag"
+        },
+        "support_fan_enable": {
+            "value": true
+        },
+        "support_supported_skin_fan_speed": {
+            "value": 100
         },
         "small_hole_max_size": {
             "value": 3
@@ -183,7 +267,7 @@
             "value": true
         },
         "jerk_print": {
-            "value": 7
+            "value": 5
         },
         "jerk_travel": {
             "value": "jerk_print"

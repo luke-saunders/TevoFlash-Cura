@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 
 if [ "$#" -gt 1 ] || [ "${1}" = "-h" ] || [ "${1}" = "--help" ]; then
     # Display help info
@@ -8,7 +8,9 @@ if [ "$#" -gt 1 ] || [ "${1}" = "-h" ] || [ "${1}" = "--help" ]; then
     echo "Arguments:"
     echo "  path           Cura path (e.g. ~/.local/share/cura/5.7)"
     exit 0
-
+elif [ -z "${1}" ]; then
+    echo "Error: No path provided."
+    exit 1    
 elif [ ! -d "${1}/definitions" ] || [ ! -d "${1}/extruders" ] || [ ! -d "${1}/quality" ] ; then
     # Confirm that we have the right folder
     echo -e "Error: Invalid Cura path."
@@ -31,14 +33,14 @@ echo -e "\e[32m
 echo -e "Cura Directory: ${cura_dir}\n"
 
 # Delete any existing tevo_flash files and directories
-rm -f ${cura_dir}/definitions/tevo_flash*
-rm -f ${cura_dir}/extruders/tevo_flash_extruder_*
-rm -f ${cura_dir}/meshes/tevo_flash*
-rm -rf ${cura_dir}/quality/tevo_flash*
+rm -f "${cura_dir}/definitions/tevo_flash"*
+rm -f "${cura_dir}/extruders/tevo_flash_extruder_"*
+rm -f "${cura_dir}/meshes/tevo_flash"*
+rm -rf "${cura_dir}/quality/tevo_flash"*
 
 # Version Specific Actions
-cp -rv ./tevo_flash/resources/* ${cura_dir}/ 
+cp -rv ./tevo_flash/resources/* "${cura_dir}/" || exit 1
 
 echo -e "NOTE: If you're reinstalling the driver, remember to remove & add the printer in Cura the reload the definition.\n"
-echo -e "\e[32m~~~~~ DONE ~~~~~\e[0m\n"
+echo -e "\e[32m~~~~~ DONE ~~~~~\n\e[0m"
 

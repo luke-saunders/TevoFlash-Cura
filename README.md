@@ -1,27 +1,24 @@
 # Tevo Flash - Cura Printer Driver
 
----
+<img src="Cura_Preview.jpg" alt="Tevo Flash" width=30% height=30%>
 
-<img src="Cura_Preview.jpg" alt="Tevo Flash" width=60% height=60%>
-
----
 ## Install Driver
 
 #### Linux
-    ./import-printerdefinition <cura_path>
+    `./import-printerdefinition.sh <cura_path>`
 
 #### Windows
-    .\Import-PrinterDefinition.ps1
+    `.\Import-PrinterDefinition.ps1 [-CuraPath <path>]`
 
 ---
 ## Cura Setup
 ### Add Printer
-    1. Settings > Printer > Add Printer... > Add a non-networked printer
-    2. Scroll down to 'Tevo'
-    3. Select 'Tevo Flash'
-    4. Click 'Add'
+1. Settings > Printer > Add Printer... > Add a non-networked printer
+2. Scroll down to 'Tevo'
+3. Select 'Tevo Flash'
+4. Click 'Add'
 
-<img src="Add_Printer.jpg" alt="Add Printer" width=60% height=60%>
+<img src="Add_Printer.jpg" alt="Add Printer" width=30% height=30%>
 
 
 ## Notes
@@ -73,6 +70,5 @@
 | Estep/mm |   408   |
 
 
----
 ## References
 https://github.com/Ultimaker/Cura/wiki/Adding-new-machine-profiles-to-Cura
